@@ -46,8 +46,7 @@ if st.button("Translate Code"):
             genai.configure(api_key=api_key)
             model = genai.GenerativeModel('gemini-2.5-flash') # Free and fast model
             
-            with st.spinner("Gemini is translating..."):
-                prompt = f"You are an expert programmer. Translate the following {source_lang} code into {target_lang}. Return ONLY the code. Do not add explanations or markdown backticks.\n\n{code_input}"
+              prompt = prompt = f"You are an expert programmer. Translate the following {source_lang} code into {target_lang}. Return ONLY the code. Do not add explanations or markdown backticks.\n\n{code_input}"
                 
                 response = model.generate_content(prompt)
                 
@@ -59,3 +58,4 @@ if st.button("Translate Code"):
         except Exception as e:
 
             st.error(f"An error occurred: {e}")
+
