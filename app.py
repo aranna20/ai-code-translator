@@ -2,21 +2,16 @@ import streamlit as st
 import google.generativeai as genai
 
 # --- Page Configuration ---
-st.set_page_config(page_title="Code Translator")
+st.set_page_config(page_title="Code Translator", page_icon="💻")
 
-# --- Title and Description ---
-st.title("Code Translator")
-st.write("Your code language Friend :)")
-
-# --- API Key Handling (No Sidebar) ---
+# --- API Key Handling ---
 try:
-    # 1. Try to get the key from the cloud secrets (Best for deployed app)
+    # Try to get key from secrets (for the live website)
     api_key = st.secrets["GEMINI_API_KEY"]
 except:
-    # 2. If no secrets found (e.g. running locally), ask on the main page
-    st.warning("⚠️ Running locally? Add your key below.")
+    # If running locally, ask the user
     api_key = st.text_input("Enter Gemini API Key", type="password")
-    
+
 # --- Main Interface ---
 col1, col2 = st.columns(2)
 
@@ -37,16 +32,19 @@ code_input = st.text_area("Paste your code here:", height=200)
 # --- The Logic ---
 if st.button("Translate Code"):
     if not api_key:
-        st.error("⚠️ Please enter your API Key in the sidebar.")
+        st.error("⚠️ Please provide an API Key.")
     elif not code_input:
         st.warning("⚠️ Please paste some code to translate.")
     else:
         # Configure Gemini
-        
-           try:
-            # Note: No "with st.spinner" line anymore, and the lines below are moved to the left.
+        try:
+            genai.configure(api_key=api_key)
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            
+            # Create Prompt
             prompt = f"You are an expert programmer. Translate the following {source_lang} code into {target_lang}. Return ONLY the code. Do not add explanations or markdown backticks.\n\n{code_input}"
             
+            # Get Response (No spinner/loading text)
             response = model.generate_content(prompt)
             
             # Display Result
@@ -56,4 +54,3 @@ if st.button("Translate Code"):
             
         except Exception as e:
             st.error(f"An error occurred: {e}")
-                
