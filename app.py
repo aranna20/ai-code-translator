@@ -43,7 +43,7 @@ if st.button("Translate Code"):
         # Configure Gemini
         try:
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel('gemini-2.5-flash')
             
             # Create Prompt
             prompt = f"You are an expert programmer. Translate the following {source_lang} code into {target_lang}. Return ONLY the code. Do not add explanations or markdown backticks.\n\n{code_input}"
@@ -58,3 +58,4 @@ if st.button("Translate Code"):
             
         except Exception as e:
             st.error(f"An error occurred: {e}")
+
