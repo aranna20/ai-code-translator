@@ -2,11 +2,11 @@ import streamlit as st
 import google.generativeai as genai
 
 # --- Page Configuration ---
-st.set_page_config(page_title="AI Code Translator")
+st.set_page_config(page_title="AI Code Translator", page_icon="💻")
 
-# --- Title and Header (Added Back) ---
-st.title("Code Translator")
-st.subheader("Your code language friend :)")
+# --- Title and Header ---
+st.title("💻 AI Code Translator")
+st.subheader("Your code language Friend :)")
 
 # --- API Key Handling ---
 try:
@@ -43,13 +43,14 @@ if st.button("Translate Code"):
         # Configure Gemini
         try:
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel('gemini-2.5-flash')
+            model = genai.GenerativeModel('gemini-1.5-flash')
             
             # Create Prompt
             prompt = f"You are an expert programmer. Translate the following {source_lang} code into {target_lang}. Return ONLY the code. Do not add explanations or markdown backticks.\n\n{code_input}"
             
-            # Get Response (Directly, without spinner text)
-            response = model.generate_content(prompt)
+            # --- CUSTOM SPINNER ADDED HERE ---
+            with st.spinner("Please hold tight..."):
+                response = model.generate_content(prompt)
             
             # Display Result
             st.success("Translation Complete!")
@@ -58,4 +59,3 @@ if st.button("Translate Code"):
             
         except Exception as e:
             st.error(f"An error occurred: {e}")
-
