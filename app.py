@@ -42,21 +42,18 @@ if st.button("Translate Code"):
         st.warning("⚠️ Please paste some code to translate.")
     else:
         # Configure Gemini
-        try:
-            genai.configure(api_key=api_key)
-            model = genai.GenerativeModel('gemini-2.5-flash') # Free and fast model
+        
+           try:
+            # Note: No "with st.spinner" line anymore, and the lines below are moved to the left.
+            prompt = f"You are an expert programmer. Translate the following {source_lang} code into {target_lang}. Return ONLY the code. Do not add explanations or markdown backticks.\n\n{code_input}"
             
-              # --- NEW CODE (Clean version) ---
-              prompt = f"You are an expert programmer. Translate the following {source_lang} code into {target_lang}. Return ONLY the code. Do not add explanations or markdown backticks.\n\n{code_input}"
-              response = model.generate_content(prompt)
-                
+            response = model.generate_content(prompt)
+            
             # Display Result
             st.success("Translation Complete!")
             st.subheader("Result:")
             st.code(response.text, language=target_lang.lower())
             
         except Exception as e:
-
             st.error(f"An error occurred: {e}")
-
-
+                
