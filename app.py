@@ -8,10 +8,15 @@ st.set_page_config(page_title="Code Translator")
 st.title("Code Translator")
 st.write("Your code language Friend :)")
 
-# --- Sidebar: API Key Input ---
-api_key = st.sidebar.text_input("Enter Gemini API Key", type="password")
-st.sidebar.markdown("[Get a Free Gemini Key](https://aistudio.google.com/app/apikey)")
-
+# --- API Key Handling (No Sidebar) ---
+try:
+    # 1. Try to get the key from the cloud secrets (Best for deployed app)
+    api_key = st.secrets["GEMINI_API_KEY"]
+except:
+    # 2. If no secrets found (e.g. running locally), ask on the main page
+    st.warning("⚠️ Running locally? Add your key below.")
+    api_key = st.text_input("Enter Gemini API Key", type="password")
+    
 # --- Main Interface ---
 col1, col2 = st.columns(2)
 
@@ -52,4 +57,5 @@ if st.button("Translate Code"):
             st.code(response.text, language=target_lang.lower())
             
         except Exception as e:
+
             st.error(f"An error occurred: {e}")
