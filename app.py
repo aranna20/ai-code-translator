@@ -2,7 +2,11 @@ import streamlit as st
 import google.generativeai as genai
 
 # --- Page Configuration ---
-st.set_page_config(page_title="Code Translator", page_icon="💻")
+st.set_page_config(page_title="AI Code Translator")
+
+# --- Title and Header (Added Back) ---
+st.title("Code Translator")
+st.subheader("Your code language friend :)")
 
 # --- API Key Handling ---
 try:
@@ -44,7 +48,7 @@ if st.button("Translate Code"):
             # Create Prompt
             prompt = f"You are an expert programmer. Translate the following {source_lang} code into {target_lang}. Return ONLY the code. Do not add explanations or markdown backticks.\n\n{code_input}"
             
-            # Get Response (No spinner/loading text)
+            # Get Response (Directly, without spinner text)
             response = model.generate_content(prompt)
             
             # Display Result
