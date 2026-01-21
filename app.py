@@ -9,45 +9,62 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- 2. CUSTOM CSS (The "Better UI & Font" Magic) ---
+# --- 2. CUSTOM CSS (Interactive Background + Better UI) ---
 st.markdown("""
     <style>
         /* Import Google Font: Inter */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
-        /* Apply Font to Whole App */
+        /* Global Font Application */
         html, body, [class*="css"] {
             font-family: 'Inter', sans-serif;
         }
 
-        /* Styling the Title */
+        /* --- THE ANIMATED BACKGROUND --- */
+        /* This targets the main app container */
+        [data-testid="stAppViewContainer"] {
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #141E30);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        /* The Animation Logic */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- UI ELEMENTS --- */
         h1 {
             color: #ffffff;
             font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Text pops against dark bg */
         }
 
-        /* Styling Buttons */
+        /* Button Styling */
         .stButton>button {
-            background-color: #4CAF50;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
             color: white;
             border-radius: 8px;
             border: none;
             padding: 10px 24px;
             font-weight: 600;
-            width: 100%;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
         .stButton>button:hover {
-            background-color: #45a049;
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.3);
         }
 
-        /* Custom Box for Results */
+        /* Result Box Styling */
         .result-box {
-            background-color: #262730;
+            background: rgba(255, 255, 255, 0.05); /* Glassmorphism effect */
+            backdrop-filter: blur(10px);
             padding: 20px;
             border-radius: 10px;
-            border-left: 5px solid #4CAF50;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             margin-top: 20px;
         }
     </style>
@@ -146,3 +163,4 @@ if st.button(submit_text, type="primary"):
 # --- 9. FOOTER ---
 st.markdown("---")
 st.caption("Built with ❤️ using Streamlit & Gemini 2.5")
+
