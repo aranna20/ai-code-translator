@@ -4,75 +4,91 @@ import google.generativeai as genai
 # --- 1. CONFIGURATION ---
 st.set_page_config(
     page_title="AI Code Swiss Army Knife",
-    page_icon="🛠️",
+    page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# --- 2. CUSTOM CSS (Pacifico Font + Animated Background) ---
+# --- 2. NEON CYBERPUNK CSS ---
 st.markdown("""
     <style>
-        /* Import Google Fonts: Inter (Body) and Pacifico (Headers) */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+        /* Import Google Fonts: Orbitron (Headers) and JetBrains Mono (Code/Body) */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
-        /* Global Font Application (Body uses Inter) */
+        /* --- GLOBAL TEXT STYLES --- */
         html, body, [class*="css"] {
-            font-family: 'Inter', sans-serif;
+            font-family: 'JetBrains Mono', monospace; /* Developer vibe */
+            color: #e0e0e0;
         }
 
-        /* --- HEADER STYLING (The Pacifico Font) --- */
+        /* --- GLOWING HEADERS --- */
         h1, h2, h3 {
-            font-family: 'Pacifico', cursive;
-            color: #ffffff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            letter-spacing: 1px;
-            font-weight: 400; /* Pacifico looks best at normal weight */
+            font-family: 'Orbitron', sans-serif;
+            color: #00d2ff; /* Cyan Neon */
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.7), 0 0 20px rgba(0, 210, 255, 0.5);
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
         
-        /* Make the main title extra big */
-        h1 {
-            font-size: 4rem !important;
-            margin-bottom: 0px;
-        }
+        h1 { font-size: 3.5rem !important; margin-bottom: 0px; }
+        h3 { font-size: 1.5rem !important; color: #ff0099; /* Pink Neon for subheaders */ text-shadow: 0 0 10px rgba(255, 0, 153, 0.6); }
 
-        /* --- THE ANIMATED BACKGROUND --- */
+        /* --- ANIMATED DEEP SPACE BACKGROUND --- */
         [data-testid="stAppViewContainer"] {
-            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #141E30);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background-size: 200% 200%;
+            animation: gradientBG 20s ease infinite;
         }
-
+        
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* --- UI ELEMENTS --- */
-        .stButton>button {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: white;
-            border-radius: 8px;
-            border: none;
-            padding: 10px 24px;
-            font-weight: 600;
+        /* --- GLASSMORPHISM CARDS (The Containers) --- */
+        .stTextArea, .stSelectbox, .stTextInput {
+            background-color: rgba(0, 0, 0, 0.3) !important;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 210, 255, 0.3); /* Subtle Cyan Border */
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            font-family: 'Inter', sans-serif;
         }
-        .stButton>button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+        
+        /* Focus Glow Effect on Inputs */
+        .stTextArea:focus-within, .stTextInput:focus-within {
+            border: 1px solid #00d2ff !important;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
         }
 
+        /* --- NEON BUTTON --- */
+        .stButton>button {
+            background: linear-gradient(90deg, #ff0099, #493240);
+            color: white;
+            border: 1px solid #ff0099;
+            border-radius: 5px;
+            padding: 10px 24px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 0, 153, 0.4);
+        }
+        
+        .stButton>button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 153, 0.8);
+            border-color: #fff;
+        }
+
+        /* --- RESULT BOX STYLING --- */
         .result-box {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 52, 96, 0.6);
+            border-left: 5px solid #00d2ff;
             padding: 20px;
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
             margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
     </style>
 """, unsafe_allow_html=True)
@@ -87,72 +103,71 @@ except:
     api_key = st.sidebar.text_input("Enter Gemini API Key", type="password")
 
 # --- 4. HEADER SECTION ---
-col1, col2 = st.columns([1, 4])
+col1, col2 = st.columns([1, 6])
 with col1:
-    st.image("https://cdn-icons-png.flaticon.com/512/2103/2103633.png", width=100)
+    # A techy icon instead of the flower
+    st.image("https://cdn-icons-png.flaticon.com/512/9088/9088266.png", width=80) 
 with col2:
-    st.title("Swiss Army Knife")
-    st.markdown("### for Code") # Using a subheader to keep the Pacifico style flowing
+    st.title("CODE // NEXUS")
+    st.markdown("### > AI-POWERED DEVELOPMENT SUITE")
 
-st.write("---")
+st.markdown("---")
 
 # --- 5. MAIN INTERFACE ---
-tab1, tab2, tab3 = st.tabs(["🔀 Translate", "🐞 Bug Fixer", "📖 Explainer"])
+# Tabs with Emoji Icons
+tab1, tab2, tab3 = st.tabs(["⚡ TRANSLATE", "🐞 DEBUGGER", "🧠 EXPLAINER"])
 
 mode = None
 submit_text = "Run"
 
 with tab1:
-    st.write("### Translate Code")
     col_a, col_b = st.columns(2)
     with col_a:
-        source_lang = st.selectbox("From Language", ["Python", "JavaScript", "Java", "C++", "SQL", "Plain English"], key="s_lang")
+        source_lang = st.selectbox("SOURCE LANGUAGE", ["Python", "JavaScript", "Java", "C++", "SQL", "Plain English"], key="s_lang")
     with col_b:
-        target_lang = st.selectbox("To Language", ["Python", "JavaScript", "Java", "C++", "SQL", "Plain English"], key="t_lang")
+        target_lang = st.selectbox("TARGET LANGUAGE", ["Python", "JavaScript", "Java", "C++", "SQL", "Plain English"], key="t_lang")
     mode = "Translate"
-    submit_text = "Translate Code 🚀"
+    submit_text = "INITIATE TRANSLATION 🚀"
 
 with tab2:
-    st.write("### Find & Fix Bugs")
-    st.info("Paste your broken code below. AI will find errors and write the fixed version.")
+    st.info("SYSTEM READY: Paste broken code segments below for analysis.")
     mode = "Bug Fixer"
-    submit_text = "Fix My Code 🔧"
+    submit_text = "EXECUTE DEBUGGING 🔧"
 
 with tab3:
-    st.write("### Code Explainer")
-    st.info("Paste complex code below. AI will explain it line-by-line.")
+    st.info("SYSTEM READY: awaiting complex logic for deconstruction.")
     mode = "Explainer"
-    submit_text = "Explain It 🧠"
+    submit_text = "ANALYZE LOGIC 🧠"
 
 # --- 6. INPUT AREA ---
-code_input = st.text_area("Paste your code here:", height=300, key="main_input")
+code_input = st.text_area("Input Code Block:", height=300, key="main_input")
 
 # --- 7. THE LOGIC ---
 if st.button(submit_text, type="primary"):
     if not api_key:
-        st.error("⚠️ Please provide an API Key in the sidebar.")
+        st.error("⚠️ ACCESS DENIED: API KEY MISSING")
     elif not code_input:
-        st.warning("⚠️ Please paste some code first.")
+        st.warning("⚠️ INPUT REQUIRED: BUFFER EMPTY")
     else:
         try:
             genai.configure(api_key=api_key)
             model = genai.GenerativeModel('gemini-2.5-flash')
             
-            # Smart Prompts
+            # Tech-themed Prompts
             if mode == "Translate":
-                prompt = f"Act as an expert developer. Translate this {source_lang} code into {target_lang}. Return ONLY the code, no markdown backticks.\n\n{code_input}"
+                prompt = f"Role: Senior Developer. Task: Convert this {source_lang} code to {target_lang}. Constraint: Return strictly the code only.\n\n{code_input}"
             elif mode == "Bug Fixer":
-                prompt = f"Act as an expert developer. 1. Find the bugs in this code. 2. Explain them briefly. 3. Provide the FIXED code.\n\n{code_input}"
+                prompt = f"Role: QA Engineer. Task: 1. Identify syntax/logic errors. 2. Explain the root cause. 3. Provide the corrected code block.\n\n{code_input}"
             elif mode == "Explainer":
-                prompt = f"Act as a computer science teacher. Explain this code in simple terms. Break it down step-by-step.\n\n{code_input}"
+                prompt = f"Role: Tech Lead. Task: Deconstruct this code logic into simple terms for a junior developer.\n\n{code_input}"
 
-            with st.spinner("🤖 AI is working its magic..."):
+            with st.spinner("🔄 PROCESSING DATA STREAM..."):
                 response = model.generate_content(prompt)
 
             # --- 8. THE RESULT ---
-            st.markdown(f"<div class='result-box'><h3>✨ Result ({mode})</h3></div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='result-box'><h3>>> OPERATION SUCCESSFUL: {mode.upper()}</h3></div>", unsafe_allow_html=True)
             
-            res_tab1, res_tab2 = st.tabs(["💻 Code View", "📄 Raw Text"])
+            res_tab1, res_tab2 = st.tabs(["💻 TERMINAL OUTPUT", "📄 RAW LOG"])
             
             with res_tab1:
                 lang_code = target_lang.lower() if mode == "Translate" else "python"
@@ -162,8 +177,8 @@ if st.button(submit_text, type="primary"):
                 st.markdown(response.text)
                 
         except Exception as e:
-            st.error(f"An error occurred: {e}")
+            st.error(f"SYSTEM FAILURE: {e}")
 
 # --- 9. FOOTER ---
 st.markdown("---")
-st.caption("Built with ❤️ using Streamlit & Gemini 1.5")
+st.markdown("<div style='text-align: center; color: #555;'>SYSTEM STATUS: ONLINE | VERSION 2.5 | POWERED BY GEMINI</div>", unsafe_allow_html=True)
