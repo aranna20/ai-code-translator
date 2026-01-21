@@ -9,26 +9,40 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- 2. CUSTOM CSS (Interactive Background + Better UI) ---
+# --- 2. CUSTOM CSS (Pacifico Font + Animated Background) ---
 st.markdown("""
     <style>
-        /* Import Google Font: Inter */
+        /* Import Google Fonts: Inter (Body) and Pacifico (Headers) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
-        /* Global Font Application */
+        /* Global Font Application (Body uses Inter) */
         html, body, [class*="css"] {
             font-family: 'Inter', sans-serif;
         }
 
+        /* --- HEADER STYLING (The Pacifico Font) --- */
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+            font-weight: 400; /* Pacifico looks best at normal weight */
+        }
+        
+        /* Make the main title extra big */
+        h1 {
+            font-size: 4rem !important;
+            margin-bottom: 0px;
+        }
+
         /* --- THE ANIMATED BACKGROUND --- */
-        /* This targets the main app container */
         [data-testid="stAppViewContainer"] {
             background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #141E30);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
         }
 
-        /* The Animation Logic */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -36,13 +50,6 @@ st.markdown("""
         }
 
         /* --- UI ELEMENTS --- */
-        h1 {
-            color: #ffffff;
-            font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Text pops against dark bg */
-        }
-
-        /* Button Styling */
         .stButton>button {
             background: linear-gradient(45deg, #4CAF50, #45a049);
             color: white;
@@ -52,15 +59,15 @@ st.markdown("""
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            font-family: 'Inter', sans-serif;
         }
         .stButton>button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(0,0,0,0.3);
         }
 
-        /* Result Box Styling */
         .result-box {
-            background: rgba(255, 255, 255, 0.05); /* Glassmorphism effect */
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             padding: 20px;
             border-radius: 10px;
@@ -82,17 +89,16 @@ except:
 # --- 4. HEADER SECTION ---
 col1, col2 = st.columns([1, 4])
 with col1:
-    st.image("https://cdn-icons-png.flaticon.com/512/2103/2103633.png", width=80)
+    st.image("https://cdn-icons-png.flaticon.com/512/2103/2103633.png", width=100)
 with col2:
-    st.title("Swiss Army Knife for Code")
-    st.markdown("**Translate, Debug, and Explain** your code with AI.")
+    st.title("Swiss Army Knife")
+    st.markdown("### for Code") # Using a subheader to keep the Pacifico style flowing
 
 st.write("---")
 
-# --- 5. MAIN INTERFACE (Using Tabs for "Better UI") ---
+# --- 5. MAIN INTERFACE ---
 tab1, tab2, tab3 = st.tabs(["🔀 Translate", "🐞 Bug Fixer", "📖 Explainer"])
 
-# We use a variable to store the user's choice based on the tab
 mode = None
 submit_text = "Run"
 
@@ -118,7 +124,7 @@ with tab3:
     mode = "Explainer"
     submit_text = "Explain It 🧠"
 
-# --- 6. INPUT AREA (Shared across all tabs) ---
+# --- 6. INPUT AREA ---
 code_input = st.text_area("Paste your code here:", height=300, key="main_input")
 
 # --- 7. THE LOGIC ---
@@ -143,14 +149,12 @@ if st.button(submit_text, type="primary"):
             with st.spinner("🤖 AI is working its magic..."):
                 response = model.generate_content(prompt)
 
-            # --- 8. THE RESULT (Better UI: Chat Bubble Style) ---
+            # --- 8. THE RESULT ---
             st.markdown(f"<div class='result-box'><h3>✨ Result ({mode})</h3></div>", unsafe_allow_html=True)
             
-            # Using tabs for the result view (Raw text vs Code)
             res_tab1, res_tab2 = st.tabs(["💻 Code View", "📄 Raw Text"])
             
             with res_tab1:
-                # If it's a translation, we guess the language for syntax highlighting
                 lang_code = target_lang.lower() if mode == "Translate" else "python"
                 st.code(response.text, language=lang_code)
                 
@@ -162,5 +166,4 @@ if st.button(submit_text, type="primary"):
 
 # --- 9. FOOTER ---
 st.markdown("---")
-st.caption("Built with ❤️ using Streamlit & Gemini 2.5")
-
+st.caption("Built with ❤️ using Streamlit & Gemini 1.5")
