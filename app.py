@@ -177,4 +177,5 @@ if st.button(submit_text, type="primary"):
             st.error(f"Error: {e}")
 
 # --- FOOTER ---
-st.markdown("<br><center style='opacity: 0.5; font-size: 0.8rem;'>Designed with Lumina AI • 2026</center>", unsafe_allow_html=True)
+st.markdown("<br><center style='opacity: 0.5; font-size: 0.8rem;'>All Right Reserved by Arannayava Debnath • 2026</center>", unsafe_allow_html=True)
+
