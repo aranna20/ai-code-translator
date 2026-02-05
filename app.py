@@ -97,10 +97,7 @@ else:
 # --- 4. HEADER ---
 st.markdown("### **AI Code Translator** <span style='color:#666; font-weight:400; font-size: 0.9em;'>by Aranayava</span>", unsafe_allow_html=True)
 
-st.write("") # Spacer
-    st.markdown("### **AI Code Translator** <span style='color:#666; font-weight:400; font-size: 0.9em;'>by Arannayava</span>", unsafe_allow_html=True)
-
-st.write("") # Spacer
+   st.write("") # Spacer
 
 # --- 5. MAIN LOGIC ---
 tab1, tab2, tab3 = st.tabs(["Translate", "Debug", "Explain"])
@@ -220,5 +217,6 @@ with tab3:
 
 # --- FOOTER ---
 st.markdown("<br><hr style='border-color: #333;'><center style='color: #444; font-size: 0.8rem;'>By Arannayava Debnath</center>", unsafe_allow_html=True)
+
 
 
