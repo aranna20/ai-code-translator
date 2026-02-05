@@ -148,7 +148,7 @@ with tab1:
                 try:
                     genai.configure(api_key=api_key)
                     # CHANGED: Switched to gemini-1.5-flash to fix 429 errors
-                    model = genai.GenerativeModel('gemini-1.5-flash') 
+                    model = genai.GenerativeModel('gemini-2.5-flash') 
                     prompt = f"Act as a Principal Engineer. Translate this {source_lang} to {target_lang}. Return ONLY the code/data, no markdown backticks, no explanations.\n\n{code_input}"
                     
                     with st.spinner("Translating..."):
@@ -217,4 +217,5 @@ with tab3:
 
 # --- FOOTER ---
 st.markdown("<br><hr style='border-color: #333;'><center style='color: #444; font-size: 0.8rem;'>By Arannayava Debnath</center>", unsafe_allow_html=True)
+
 
