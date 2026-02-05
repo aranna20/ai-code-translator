@@ -99,7 +99,7 @@ col_h1, col_h2 = st.columns([0.5, 8])
 with col_h1:
     st.image("https://cdn-icons-png.flaticon.com/512/12308/12308696.png", width=45)
 with col_h2:
-    st.markdown("### **AI Code Translator** <span style='color:#666; font-weight:400; font-size: 0.9em;'>by Lumina</span>", unsafe_allow_html=True)
+    st.markdown("### **AI Code Translator** <span style='color:#666; font-weight:400; font-size: 0.9em;'>by Arannayava</span>", unsafe_allow_html=True)
 
 st.write("") # Spacer
 
@@ -221,3 +221,4 @@ with tab3:
 
 # --- FOOTER ---
 st.markdown("<br><hr style='border-color: #333;'><center style='color: #444; font-size: 0.8rem;'>By Arannayava Debnath</center>", unsafe_allow_html=True)
+
