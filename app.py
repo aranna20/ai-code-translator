@@ -88,16 +88,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- 3. API KEY HANDLING ---
-# (Kept simple for the prototype)
 if "GEMINI_API_KEY" in st.secrets:
     api_key = st.secrets["GEMINI_API_KEY"]
 else:
     api_key = st.sidebar.text_input("Gemini API Key", type="password")
 
-# --- 4. HEADER ---
-st.markdown("### **AI Code Translator** <span style='color:#666; font-weight:400; font-size: 0.9em;'>by Aranayava</span>", unsafe_allow_html=True)
-
-   st.write("") # Spacer
+# --- 4. HEADER (Icon Removed) ---
+st.markdown("### **AI Code Translator** <span style='color:#666; font-weight:400; font-size: 0.9em;'>by Arannayava</span>", unsafe_allow_html=True)
+st.write("") # Spacer
 
 # --- 5. MAIN LOGIC ---
 tab1, tab2, tab3 = st.tabs(["Translate", "Debug", "Explain"])
@@ -122,7 +120,6 @@ with tab1:
     # --- Content Logic ---
     initial_code = ""
     if uploaded_file is not None:
-        # Procedure: Read bytes -> Decode -> Place in variable
         try:
             initial_code = uploaded_file.read().decode("utf-8")
             st.toast(f"File '{uploaded_file.name}' loaded successfully!", icon="✅")
@@ -150,7 +147,7 @@ with tab1:
             else:
                 try:
                     genai.configure(api_key=api_key)
-                    model = genai.GenerativeModel('gemini-2.0-flash') # Using faster model
+                    model = genai.GenerativeModel('gemini-2.0-flash') 
                     prompt = f"Act as a Principal Engineer. Translate this {source_lang} to {target_lang}. Return ONLY the code/data, no markdown backticks, no explanations.\n\n{code_input}"
                     
                     with st.spinner("Translating..."):
@@ -170,7 +167,7 @@ with tab1:
             
             st.code(st.session_state['translation_result'], language=syntax, line_numbers=True)
         else:
-            # Placeholder for empty state (Visual polish)
+            # Placeholder for empty state
             st.markdown(
                 """
                 <div style='height: 400px; border: 1px dashed #333; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #555;'>
@@ -181,7 +178,7 @@ with tab1:
             )
 
 # ==========================================
-# TAB 2: BUG FIXER (Centered Layout)
+# TAB 2: BUG FIXER
 # ==========================================
 with tab2:
     st.markdown("<br>", unsafe_allow_html=True)
@@ -217,6 +214,3 @@ with tab3:
 
 # --- FOOTER ---
 st.markdown("<br><hr style='border-color: #333;'><center style='color: #444; font-size: 0.8rem;'>By Arannayava Debnath</center>", unsafe_allow_html=True)
-
-
-
