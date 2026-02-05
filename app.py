@@ -147,7 +147,7 @@ with tab1:
             else:
                 try:
                     genai.configure(api_key=api_key)
-                    model = genai.GenerativeModel('gemini-2.0-flash') 
+                    model = genai.GenerativeModel('gemini-2.5-flash') 
                     prompt = f"Act as a Principal Engineer. Translate this {source_lang} to {target_lang}. Return ONLY the code/data, no markdown backticks, no explanations.\n\n{code_input}"
                     
                     with st.spinner("Translating..."):
@@ -191,7 +191,7 @@ with tab2:
         if st.button("Analyze & Fix Bugs", use_container_width=True):
             if bug_input and api_key:
                 genai.configure(api_key=api_key)
-                model = genai.GenerativeModel('gemini-2.0-flash')
+                model = genai.GenerativeModel('gemini-2.5-flash')
                 prompt = f"Act as a QA Lead. Find bugs, explain them, and provide the fixed code.\n\n{bug_input}"
                 with st.spinner("Debugging..."):
                     res = model.generate_content(prompt)
@@ -214,3 +214,4 @@ with tab3:
 
 # --- FOOTER ---
 st.markdown("<br><hr style='border-color: #333;'><center style='color: #444; font-size: 0.8rem;'>By Arannayava Debnath</center>", unsafe_allow_html=True)
+
